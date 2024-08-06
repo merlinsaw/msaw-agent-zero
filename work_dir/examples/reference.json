@@ -1,0 +1,1479 @@
+{
+    "whisper_cpp_guide": {
+        "description": "A guide to transcribe audio using Whisper CPP",
+        "steps_to_complete": [
+            {
+                "step": 1,
+                "subtask": "Check and install dependencies",
+                "commands": [
+                    "# Check for git",
+                    "if ! command -v git &> /dev/null; then",
+                    "    sudo apt-get update",
+                    "    sudo apt-get install -y git",
+                    "else",
+                    "    echo 'git is already installed'",
+                    "fi",
+                    "",
+                    "# Check for build-essential and cmake",
+                    "if ! dpkg -s build-essential cmake &> /dev/null; then",
+                    "    sudo apt-get update",
+                    "    sudo apt-get install -y build-essential cmake",
+                    "else",
+                    "    echo 'build-essential and cmake are already installed'",
+                    "fi",
+                    "",
+                    "# Check for ffmpeg",
+                    "if ! command -v ffmpeg &> /dev/null; then",
+                    "    sudo apt-get update",
+                    "    sudo apt-get install -y ffmpeg",
+                    "else",
+                    "    echo 'ffmpeg is already installed'",
+                    "fi"
+                ],
+                "take into consideration": "These commands will check for existing installations before proceeding with new installations.",
+                "related_issues": [
+                    {
+                        "related_step": 1,
+                        "problem": "Unable to install packages due to insufficient permissions",
+                        "solution": "Ensure you have sudo privileges or contact your system administrator for assistance with package installation."
+                    },
+                    {
+                        "related_step": 1,
+                        "problem": "Package manager is locked by another process",
+                        "solution": "Wait for the other process to finish, or if it's stuck, you may need to clear the lock manually. Run 'sudo rm /var/lib/dpkg/lock' and try again."
+                    },
+                    {
+                        "related_step": 1,
+                        "problem": "Simulated error occurred during execution.",
+                        "solution": "Check the command syntax and try again."
+                    },
+                    {
+                        "related_step": 1,
+                        "problem": "New issue encountered.",
+                        "solution": "Solution to the new issue."
+                    },
+                    {
+                        "related_step": 1,
+                        "problem": "FileNotFoundError encountered when trying to save the script.",
+                        "solution": "Create the tools directory before saving the script.",
+                        "information": []
+                    },
+                    {
+                        "related_step": 1,
+                        "problem": "git is not installed",
+                        "solution": "Install git using the command: sudo apt-get install -y git",
+                        "information": []
+                    },
+                    {
+                        "related_step": 1,
+                        "problem": "cmake is not installed",
+                        "solution": "Install cmake using the command: sudo apt-get install -y cmake",
+                        "information": []
+                    },
+                    {
+                        "problem": "Unable to execute terminal commands or retrieve output.",
+                        "solution": "Check the terminal session for issues or restart the environment.",
+                        "information": [],
+                        "related_step": 1
+                    },
+                    {
+                        "problem": "Write operations are failing across different directories.",
+                        "solution": "Check for environment constraints or configurations that may be preventing write access. Ensure the Python environment is correctly set up and has the necessary permissions.",
+                        "information": [],
+                        "related_step": 1
+                    },
+                    {
+                        "problem": "Write operations are failing due to IOCTL errors and a corrupted journal file.",
+                        "solution": "Investigate the IOCTL failures and consider repairing the journal file. Check system logs for further details.",
+                        "information": [],
+                        "related_step": 1
+                    },
+                    {
+                        "problem": "Command execution environment is unresponsive, no output or errors returned.",
+                        "solution": "Check system logs or restart the environment.",
+                        "information": [],
+                        "related_step": 1
+                    },
+                    {
+                        "problem": "Command execution environment is unresponsive, unable to perform file operations.",
+                        "solution": "Check system status or restart the environment.",
+                        "information": [],
+                        "related_step": 1
+                    },
+                    {
+                        "problem": "Transcription process appears to be stuck without completion.",
+                        "solution": "Check system resources or restart the transcription process.",
+                        "information": [],
+                        "related_step": 1
+                    },
+                    {
+                        "problem": "Command execution environment is unresponsive, unable to perform any operations.",
+                        "solution": "Check system status or restart the environment.",
+                        "information": [],
+                        "related_step": 1
+                    },
+                    {
+                        "problem": "System has not been booted with systemd as init system, causing command execution failures.",
+                        "solution": "Check the init system or use alternative commands for managing the environment.",
+                        "information": [],
+                        "related_step": 1
+                    },
+                    {
+                        "related_step": 1,
+                        "problem": "New issue encountered.",
+                        "solution": "Investigate the cause of the new issue and provide a solution."
+                    }
+                ],
+                "helper_commands": [
+                    "No specific commands available."
+                ],
+                "helper_urls": [
+                    "No specific URLs available."
+                ],
+                "helper_files": [
+                    "No specific files available."
+                ]
+            },
+            {
+                "step": 2,
+                "subtask": "Clone Whisper CPP repository to `root/modules` folder.",
+                "commands": [
+                    "if [ ! -d \"whisper.cpp\" ]; then",
+                    "    git clone https://github.com/ggerganov/whisper.cpp.git",
+                    "    cd whisper.cpp",
+                    "else",
+                    "    echo 'whisper.cpp directory already exists. Updating...'",
+                    "    cd whisper.cpp",
+                    "    git pull",
+                    "fi"
+                ],
+                "take into consideration": "The repository should be cloned in the `root/modules` folder. This checks if the repository already exists and updates it if it does.",
+                "status": "Success",
+                "related_issues": [
+                    {
+                        "related_step": 2,
+                        "problem": "Git clone fails due to network issues",
+                        "solution": "Check your internet connection. If you're behind a proxy, configure git to use the proxy with 'git config --global http.proxy http://proxyserver:port'"
+                    },
+                    {
+                        "related_step": 2,
+                        "problem": "Permission denied when trying to clone into the directory",
+                        "solution": "Ensure you have write permissions in the current directory. You may need to change ownership or permissions of the parent directory."
+                    },
+                    {
+                        "related_step": 2,
+                        "problem": "Simulated error occurred during execution.",
+                        "solution": "Check the command syntax and try again."
+                    },
+                    {
+                        "related_step": 2,
+                        "problem": "NameError encountered: json is not defined.",
+                        "solution": "Ensure the json module is imported at the beginning of the script.",
+                        "information": []
+                    },
+                    {
+                        "problem": "Unable to execute terminal commands or retrieve output.",
+                        "solution": "Check the terminal session for issues or restart the environment.",
+                        "information": [],
+                        "related_step": 2
+                    },
+                    {
+                        "problem": "Write operations are failing across different directories.",
+                        "solution": "Check for environment constraints or configurations that may be preventing write access. Ensure the Python environment is correctly set up and has the necessary permissions.",
+                        "information": [],
+                        "related_step": 2
+                    },
+                    {
+                        "problem": "Write operations are failing due to IOCTL errors and a corrupted journal file.",
+                        "solution": "Investigate the IOCTL failures and consider repairing the journal file. Check system logs for further details.",
+                        "information": [],
+                        "related_step": 2
+                    },
+                    {
+                        "problem": "Command execution environment is unresponsive, no output or errors returned.",
+                        "solution": "Check system logs or restart the environment.",
+                        "information": [],
+                        "related_step": 2
+                    },
+                    {
+                        "problem": "Command execution environment is unresponsive, unable to perform file operations.",
+                        "solution": "Check system status or restart the environment.",
+                        "information": [],
+                        "related_step": 2
+                    },
+                    {
+                        "problem": "Transcription process appears to be stuck without completion.",
+                        "solution": "Check system resources or restart the transcription process.",
+                        "information": [],
+                        "related_step": 2
+                    },
+                    {
+                        "problem": "Command execution environment is unresponsive, unable to perform any operations.",
+                        "solution": "Check system status or restart the environment.",
+                        "information": [],
+                        "related_step": 2
+                    },
+                    {
+                        "problem": "System has not been booted with systemd as init system, causing command execution failures.",
+                        "solution": "Check the init system or use alternative commands for managing the environment.",
+                        "information": [],
+                        "related_step": 2
+                    },
+                    {
+                        "related_step": 2,
+                        "problem": "Network issues during git clone.",
+                        "solution": "Check your internet connection and retry the clone operation."
+                    }
+                ],
+                "helper_commands": [
+                    "No specific commands available."
+                ],
+                "helper_urls": [
+                    "No specific URLs available."
+                ],
+                "helper_files": [
+                    "No specific files available."
+                ]
+            },
+            {
+                "step": 3,
+                "subtask": "Build Whisper CPP",
+                "commands": [
+                    "if [ ! -f \"main\" ]; then",
+                    "    make",
+                    "else",
+                    "    echo 'Whisper CPP is already built. To rebuild, run: make clean && make'",
+                    "fi"
+                ],
+                "take into consideration": "This checks if Whisper CPP is already built before proceeding with the build process.",
+                "related_issues": [
+                    {
+                        "related_step": 3,
+                        "problem": "Compilation errors during make process",
+                        "solution": "Ensure all dependencies are correctly installed. You may need to update your system or install additional development libraries. Check the error message for specific missing dependencies."
+                    },
+                    {
+                        "related_step": 3,
+                        "problem": "Out of memory error during compilation",
+                        "solution": "If you're on a system with limited RAM, try using a swap file or increase your system's virtual memory. Alternatively, you can try building with fewer parallel jobs using 'make -j2'"
+                    },
+                    {
+                        "related_step": 3,
+                        "problem": "The build process for Whisper CPP is ongoing.",
+                        "solution": "Wait for the build process to complete before proceeding to the next step."
+                    },
+                    {
+                        "related_step": 3,
+                        "problem": "Warning about discarded 'const' qualifier in function 'ggml_vec_mad_f16'.",
+                        "solution": "This warning can be safely ignored. It is due to the function signature incompatibility between the Whisper code and the Arm Compute Library. The function is still correctly implemented in Whisper CPP."
+                    },
+                    {
+                        "related_step": 3,
+                        "problem": "Simulated error occurred during execution.",
+                        "solution": "Check the command syntax and try again."
+                    },
+                    {
+                        "problem": "Unable to execute terminal commands or retrieve output.",
+                        "solution": "Check the terminal session for issues or restart the environment.",
+                        "information": [],
+                        "related_step": 3
+                    },
+                    {
+                        "problem": "Write operations are failing across different directories.",
+                        "solution": "Check for environment constraints or configurations that may be preventing write access. Ensure the Python environment is correctly set up and has the necessary permissions.",
+                        "information": [],
+                        "related_step": 3
+                    },
+                    {
+                        "problem": "Write operations are failing due to IOCTL errors and a corrupted journal file.",
+                        "solution": "Investigate the IOCTL failures and consider repairing the journal file. Check system logs for further details.",
+                        "information": [],
+                        "related_step": 3
+                    },
+                    {
+                        "problem": "Command execution environment is unresponsive, no output or errors returned.",
+                        "solution": "Check system logs or restart the environment.",
+                        "information": [],
+                        "related_step": 3
+                    },
+                    {
+                        "problem": "Command execution environment is unresponsive, unable to perform file operations.",
+                        "solution": "Check system status or restart the environment.",
+                        "information": [],
+                        "related_step": 3
+                    },
+                    {
+                        "problem": "Transcription process appears to be stuck without completion.",
+                        "solution": "Check system resources or restart the transcription process.",
+                        "information": [],
+                        "related_step": 3
+                    },
+                    {
+                        "problem": "Command execution environment is unresponsive, unable to perform any operations.",
+                        "solution": "Check system status or restart the environment.",
+                        "information": [],
+                        "related_step": 3
+                    },
+                    {
+                        "problem": "System has not been booted with systemd as init system, causing command execution failures.",
+                        "solution": "Check the init system or use alternative commands for managing the environment.",
+                        "information": [],
+                        "related_step": 3
+                    }
+                ],
+                "helper_commands": [
+                    "No specific commands available."
+                ],
+                "helper_urls": [
+                    "No specific URLs available."
+                ],
+                "helper_files": [
+                    "No specific files available."
+                ]
+            },
+            {
+                "step": 4,
+                "subtask": "Download Whisper model",
+                "commands": [
+                    "if [ ! -f \"models/ggml-base.en.bin\" ]; then",
+                    "    bash ./models/download-ggml-model.sh base.en",
+                    "else",
+                    "    echo 'Model already exists. To redownload, delete the existing model first.'",
+                    "fi"
+                ],
+                "take into consideration": "Replace 'base.en' with your preferred model (e.g., tiny.en, small.en, medium.en, large). This checks if the model already exists before downloading.",
+                "related_issues": [
+                    {
+                        "related_step": 4,
+                        "problem": "Download fails due to network issues",
+                        "solution": "Check your internet connection. If the issue persists, try manually downloading the model from the official repository and placing it in the 'models' directory."
+                    },
+                    {
+                        "related_step": 4,
+                        "problem": "Insufficient disk space for model download",
+                        "solution": "Free up disk space or choose a smaller model. The 'tiny.en' model is the smallest and requires less space."
+                    },
+                    {
+                        "related_step": 4,
+                        "problem": "Simulated error occurred during execution.",
+                        "solution": "Check the command syntax and try again."
+                    },
+                    {
+                        "related_step": 4,
+                        "problem": "Model downloaded successfully.",
+                        "solution": "The model file ggml-base.en.bin is available in the models directory.",
+                        "information": []
+                    },
+                    {
+                        "related_step": 4,
+                        "problem": "404 error when trying to download the small.en model.",
+                        "solution": "Check the README for the correct model name or URL.",
+                        "information": []
+                    },
+                    {
+                        "related_step": 4,
+                        "problem": "Download fails due to network issues.",
+                        "solution": "Check your internet connection and try again.",
+                        "information": []
+                    },
+                    {
+                        "related_step": 4,
+                        "problem": "Download script not found in the models directory.",
+                        "solution": "Ensure the Whisper CPP repository is cloned correctly and contains the download script.",
+                        "information": []
+                    },
+                    {
+                        "problem": "Unable to execute terminal commands or retrieve output.",
+                        "solution": "Check the terminal session for issues or restart the environment.",
+                        "information": [],
+                        "related_step": 4
+                    },
+                    {
+                        "problem": "Write operations are failing across different directories.",
+                        "solution": "Check for environment constraints or configurations that may be preventing write access. Ensure the Python environment is correctly set up and has the necessary permissions.",
+                        "information": [],
+                        "related_step": 4
+                    },
+                    {
+                        "problem": "Write operations are failing due to IOCTL errors and a corrupted journal file.",
+                        "solution": "Investigate the IOCTL failures and consider repairing the journal file. Check system logs for further details.",
+                        "information": [],
+                        "related_step": 4
+                    },
+                    {
+                        "problem": "Command execution environment is unresponsive, no output or errors returned.",
+                        "solution": "Check system logs or restart the environment.",
+                        "information": [],
+                        "related_step": 4
+                    },
+                    {
+                        "problem": "Command execution environment is unresponsive, unable to perform file operations.",
+                        "solution": "Check system status or restart the environment.",
+                        "information": [],
+                        "related_step": 4
+                    },
+                    {
+                        "problem": "Transcription process appears to be stuck without completion.",
+                        "solution": "Check system resources or restart the transcription process.",
+                        "information": [],
+                        "related_step": 4
+                    },
+                    {
+                        "problem": "Command execution environment is unresponsive, unable to perform any operations.",
+                        "solution": "Check system status or restart the environment.",
+                        "information": [],
+                        "related_step": 4
+                    },
+                    {
+                        "problem": "System has not been booted with systemd as init system, causing command execution failures.",
+                        "solution": "Check the init system or use alternative commands for managing the environment.",
+                        "information": [],
+                        "related_step": 4
+                    }
+                ],
+                "helper_commands": [
+                    "No specific commands available."
+                ],
+                "helper_urls": [
+                    "No specific URLs available."
+                ],
+                "helper_files": [
+                    "No specific files available."
+                ]
+            },
+            {
+                "step": 5,
+                "subtask": "make the python binding work so we can use whisper.cpp in python",
+                "commands": "",
+                "take into consideration": "This step allows you to use Whisper CPP in Python scripts.",
+                "related_issues": [
+                    {
+                        "problem": "Unable to execute terminal commands or retrieve output.",
+                        "solution": "Check the terminal session for issues or restart the environment.",
+                        "information": [],
+                        "related_step": 5
+                    },
+                    {
+                        "problem": "Write operations are failing across different directories.",
+                        "solution": "Check for environment constraints or configurations that may be preventing write access. Ensure the Python environment is correctly set up and has the necessary permissions.",
+                        "information": [],
+                        "related_step": 5
+                    },
+                    {
+                        "problem": "Write operations are failing due to IOCTL errors and a corrupted journal file.",
+                        "solution": "Investigate the IOCTL failures and consider repairing the journal file. Check system logs for further details.",
+                        "information": [],
+                        "related_step": 5
+                    },
+                    {
+                        "problem": "Command execution environment is unresponsive, no output or errors returned.",
+                        "solution": "Check system logs or restart the environment.",
+                        "information": [],
+                        "related_step": 5
+                    },
+                    {
+                        "problem": "Command execution environment is unresponsive, unable to perform file operations.",
+                        "solution": "Check system status or restart the environment.",
+                        "information": [],
+                        "related_step": 5
+                    },
+                    {
+                        "problem": "Transcription process appears to be stuck without completion.",
+                        "solution": "Check system resources or restart the transcription process.",
+                        "information": [],
+                        "related_step": 5
+                    },
+                    {
+                        "problem": "Command execution environment is unresponsive, unable to perform any operations.",
+                        "solution": "Check system status or restart the environment.",
+                        "information": [],
+                        "related_step": 5
+                    },
+                    {
+                        "problem": "System has not been booted with systemd as init system, causing command execution failures.",
+                        "solution": "Check the init system or use alternative commands for managing the environment.",
+                        "information": [],
+                        "related_step": 5
+                    }
+                ],
+                "helper_commands": [
+                    "No specific commands available."
+                ],
+                "helper_urls": [
+                    "No specific URLs available."
+                ],
+                "helper_files": [
+                    "No specific files available."
+                ]
+            },
+            {
+                "step": 6,
+                "subtask": "Prepare audio file",
+                "take into consideration": "Ensure your audio file is in a supported format (e.g., WAV, MP3, FLAC)",
+                "related_issues": [
+                    {
+                        "related_step": 6,
+                        "problem": "Audio file is in an unsupported format",
+                        "solution": "Use FFmpeg to convert your audio to a supported format. For example: 'ffmpeg -i input.unsupported -acodec pcm_s16le -ar 16000 output.wav'"
+                    },
+                    {
+                        "related_step": 6,
+                        "problem": "Simulated error occurred during execution.",
+                        "solution": "Check the command syntax and try again."
+                    },
+                    {
+                        "related_step": 6,
+                        "problem": "The audio file does not exist at the specified path.",
+                        "solution": "Ensure the audio file is available at the correct location before attempting conversion.",
+                        "information": []
+                    },
+                    {
+                        "related_step": 6,
+                        "problem": "No audio files found in the current directory.",
+                        "solution": "Acquire an audio file in a supported format (WAV, MP3, FLAC) for processing.",
+                        "information": []
+                    },
+                    {
+                        "related_step": 6,
+                        "problem": "Some necessary files are missing from the Whisper CPP repository.",
+                        "solution": "Ensure the repository is cloned correctly and contains all required files.",
+                        "information": []
+                    },
+                    {
+                        "problem": "Unable to execute terminal commands or retrieve output.",
+                        "solution": "Check the terminal session for issues or restart the environment.",
+                        "information": [],
+                        "related_step": 6
+                    },
+                    {
+                        "problem": "Write operations are failing across different directories.",
+                        "solution": "Check for environment constraints or configurations that may be preventing write access. Ensure the Python environment is correctly set up and has the necessary permissions.",
+                        "information": [],
+                        "related_step": 6
+                    },
+                    {
+                        "problem": "Write operations are failing due to IOCTL errors and a corrupted journal file.",
+                        "solution": "Investigate the IOCTL failures and consider repairing the journal file. Check system logs for further details.",
+                        "information": [],
+                        "related_step": 6
+                    },
+                    {
+                        "problem": "Command execution environment is unresponsive, no output or errors returned.",
+                        "solution": "Check system logs or restart the environment.",
+                        "information": [],
+                        "related_step": 6
+                    },
+                    {
+                        "problem": "Command execution environment is unresponsive, unable to perform file operations.",
+                        "solution": "Check system status or restart the environment.",
+                        "information": [],
+                        "related_step": 6
+                    },
+                    {
+                        "problem": "Transcription process appears to be stuck without completion.",
+                        "solution": "Check system resources or restart the transcription process.",
+                        "information": [],
+                        "related_step": 6
+                    },
+                    {
+                        "problem": "Command execution environment is unresponsive, unable to perform any operations.",
+                        "solution": "Check system status or restart the environment.",
+                        "information": [],
+                        "related_step": 6
+                    },
+                    {
+                        "problem": "System has not been booted with systemd as init system, causing command execution failures.",
+                        "solution": "Check the init system or use alternative commands for managing the environment.",
+                        "information": [],
+                        "related_step": 6
+                    }
+                ],
+                "helper_commands": [
+                    "No specific commands available."
+                ],
+                "helper_urls": [
+                    "No specific URLs available."
+                ],
+                "helper_files": [
+                    "No specific files available."
+                ]
+            },
+            {
+                "step": 7,
+                "subtask": "Convert audio to correct format",
+                "commands": "echo y | ffmpeg -y -i /path/to/input/audio.wav -ar 16000 /path/to/output/audio_16k.wav",
+                "take into consideration": "This command converts the audio to a 16 kHz sample rate WAV file, which is optimal for Whisper. Replace the input and output paths as needed.",
+                "options": [
+                    {
+                        "flag": "-i",
+                        "description": "Path to the input audio file"
+                    },
+                    {
+                        "flag": "-ar 16000",
+                        "description": "Sets the audio sampling rate to 16 kHz"
+                    }
+                ],
+                "helper_commands": [
+                    "echo y | ffmpeg -y -i /path/to/input/audio.wav -ar 16000 /path/to/output/audio_16k.wav"
+                ],
+                "helper_urls": [
+                    "https://ffmpeg.org/ffmpeg.html"
+                ],
+                "helper_files": [
+                    "/path/to/input/audio.wav",
+                    "/path/to/output/audio_16k.wav "
+                ],
+                "related_issues": [
+                    {
+                        "related_step": 7,
+                        "problem": "FFmpeg fails to convert the audio",
+                        "solution": "Ensure FFmpeg is correctly installed. If the issue persists, check if the input file is corrupted or if you have read permissions for the input file and write permissions for the output directory."
+                    },
+                    {
+                        "related_step": 7,
+                        "problem": "Simulated error occurred during execution.",
+                        "solution": "Check the command syntax and try again."
+                    },
+                    {
+                        "related_step": 7,
+                        "problem": "The audio file does not exist at the specified path.",
+                        "solution": "Ensure the audio file is available at the correct location before attempting conversion."
+                    },
+                    {
+                        "related_step": 7,
+                        "problem": "The output file '/path/to/output/audio_16k.wav' already exists.",
+                        "solution": "To overwrite, ensure to use the '-y' flag in the FFmpeg command to avoid prompts.",
+                        "information": [
+                            {
+                                "helper_commands": [
+                                    "echo y | ffmpeg -y -i /path/to/input/audio.wav -ar 16000 /path/to/output/audio_16k.wav"
+                                ],
+                                "helper_urls": [
+                                    "https://ffmpeg.org/ffmpeg.html"
+                                ],
+                                "helper_files": [
+                                    "/path/to/input/audio.wav",
+                                    "/path/to/output/audio_16k.wav "
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "related_step": 7,
+                        "problem": "Missing instructions for downloading the model.",
+                        "solution": "Check README files for guidance on downloading the model.",
+                        "information": []
+                    },
+                    {
+                        "related_step": 7,
+                        "problem": "Unable to execute terminal commands or retrieve output.",
+                        "solution": "Check the terminal session for issues or restart the environment.",
+                        "information": []
+                    },
+                    {
+                        "related_step": 7,
+                        "problem": "Write operations are failing across different directories.",
+                        "solution": "Check for environment constraints or configurations that may be preventing write access. Ensure the Python environment is correctly set up and has the necessary permissions.",
+                        "information": []
+                    },
+                    {
+                        "problem": "Write operations are failing due to IOCTL errors and a corrupted journal file.",
+                        "solution": "Investigate the IOCTL failures and consider repairing the journal file. Check system logs for further details.",
+                        "information": [],
+                        "related_step": 7
+                    },
+                    {
+                        "problem": "Command execution environment is unresponsive, no output or errors returned.",
+                        "solution": "Check system logs or restart the environment.",
+                        "information": [],
+                        "related_step": 7
+                    },
+                    {
+                        "problem": "Command execution environment is unresponsive, unable to perform file operations.",
+                        "solution": "Check system status or restart the environment.",
+                        "information": [],
+                        "related_step": 7
+                    },
+                    {
+                        "problem": "Transcription process appears to be stuck without completion.",
+                        "solution": "Check system resources or restart the transcription process.",
+                        "information": [],
+                        "related_step": 7
+                    },
+                    {
+                        "problem": "Command execution environment is unresponsive, unable to perform any operations.",
+                        "solution": "Check system status or restart the environment.",
+                        "information": [],
+                        "related_step": 7
+                    },
+                    {
+                        "problem": "System has not been booted with systemd as init system, causing command execution failures.",
+                        "solution": "Check the init system or use alternative commands for managing the environment.",
+                        "information": [],
+                        "related_step": 7
+                    }
+                ]
+            },
+            {
+                "step": 8,
+                "subtask": "get the audio file length of samples/jfk.wav for timestamp verification in following steps",
+                "commands": "ffprobe -i samples/jfk.wav -show_entries format=duration -v quiet -of csv=\"p=0\"",
+                "take into consideration": "This command retrieves the duration of the audio file in seconds. You will need this information to verify the transcription timestamps reached the end of the file.",
+                "related_issues": [
+                    {
+                        "related_step": 8,
+                        "problem": "FFprobe fails to retrieve audio file information",
+                        "solution": "Ensure FFprobe is correctly installed and that the audio file path is correct. If the issue persists, check the audio file format and encoding."
+                    },
+                    {
+                        "related_step": 8,
+                        "problem": "Simulated error occurred during execution.",
+                        "solution": "Check the command syntax and try again."
+                    },
+                    {
+                        "related_step": 8,
+                        "problem": "The audio file does not exist at the specified path.",
+                        "solution": "Ensure the audio file is available at the correct location before attempting to retrieve its duration."
+                    },
+                    {
+                        "problem": "Unable to execute terminal commands or retrieve output.",
+                        "solution": "Check the terminal session for issues or restart the environment.",
+                        "information": [],
+                        "related_step": 8
+                    },
+                    {
+                        "problem": "Write operations are failing across different directories.",
+                        "solution": "Check for environment constraints or configurations that may be preventing write access. Ensure the Python environment is correctly set up and has the necessary permissions.",
+                        "information": [],
+                        "related_step": 8
+                    },
+                    {
+                        "problem": "Write operations are failing due to IOCTL errors and a corrupted journal file.",
+                        "solution": "Investigate the IOCTL failures and consider repairing the journal file. Check system logs for further details.",
+                        "information": [],
+                        "related_step": 8
+                    },
+                    {
+                        "problem": "Command execution environment is unresponsive, no output or errors returned.",
+                        "solution": "Check system logs or restart the environment.",
+                        "information": [],
+                        "related_step": 8
+                    },
+                    {
+                        "problem": "Command execution environment is unresponsive, unable to perform file operations.",
+                        "solution": "Check system status or restart the environment.",
+                        "information": [],
+                        "related_step": 8
+                    },
+                    {
+                        "problem": "Transcription process appears to be stuck without completion.",
+                        "solution": "Check system resources or restart the transcription process.",
+                        "information": [],
+                        "related_step": 8
+                    },
+                    {
+                        "problem": "Command execution environment is unresponsive, unable to perform any operations.",
+                        "solution": "Check system status or restart the environment.",
+                        "information": [],
+                        "related_step": 8
+                    },
+                    {
+                        "problem": "System has not been booted with systemd as init system, causing command execution failures.",
+                        "solution": "Check the init system or use alternative commands for managing the environment.",
+                        "information": [],
+                        "related_step": 8
+                    }
+                ],
+                "helper_commands": [
+                    "No specific commands available."
+                ],
+                "helper_urls": [
+                    "No specific URLs available."
+                ],
+                "helper_files": [
+                    "No specific files available."
+                ]
+            },
+            {
+                "step": 9,
+                "subtask": "test the transcription first with the samples provided in whisper.cpp app",
+                "commands": "./main -m models/ggml-base.en.bin -f samples/jfk.wav --output-file output_test.txt",
+                "take into consideration": "Use CUDA GPU for transcription, don not take any action until the transcription is done. Edit the command to include all **options** from this step. Update the currently used value for every option in the json.  #### Starting a long-running process ####",
+                "options": [
+                    {
+                        "flag": "--duration",
+                        "description": "duration of audio to process in milliseconds"
+                    },
+                    {
+                        "flag": "--prompt PROMPT",
+                        "description": "initial prompt (max n_text_ctx/2 tokens)",
+                        "value": "When the transcription is still in progress print the estimated progress in percentages."
+                    },
+                    {
+                        "flag": "--model",
+                        "description": "Path to the Whisper model (models/ggml-base.en.bin)"
+                    },
+                    {
+                        "flag": "--file",
+                        "description": "Path to the input WAV audio file"
+                    },
+                    {
+                        "flag": "--output-json",
+                        "description": "Output result in a JSON file"
+                    },
+                    {
+                        "flag": "--output-file",
+                        "description": "Output file path (without file extension)"
+                    },
+                    {
+                        "flag": "--language",
+                        "description": "Language code (e.g., 'en' for English, 'auto' for auto-detect)"
+                    }
+                ],
+                "related_issues": [
+                    {
+                        "related_step": 9,
+                        "problem": "Transcription process is extremely slow",
+                        "solution": "Consider using a smaller model or increasing the number of threads with the '-t' option if you have a multi-core CPU. Also, ensure no other resource-intensive processes are running simultaneously."
+                    },
+                    {
+                        "related_step": 9,
+                        "problem": "Out of memory error during transcription",
+                        "solution": "Try using a smaller Whisper model. If the issue persists, you may need to increase your system's RAM or use a swap file."
+                    },
+                    {
+                        "related_step": 9,
+                        "problem": "Simulated error occurred during execution.",
+                        "solution": "Check the command syntax and try again."
+                    },
+                    {
+                        "related_step": 9,
+                        "problem": "Missing output file",
+                        "solution": "The output file output.txt does not exist, indicating that the transcription process may not have completed successfully. Ensure that the transcription command is executed correctly and that the audio file is available at the correct location before attempting transcription again.",
+                        "information": []
+                    },
+                    {
+                        "problem": "Unable to execute terminal commands or retrieve output.",
+                        "solution": "Check the terminal session for issues or restart the environment.",
+                        "information": [],
+                        "related_step": 9
+                    },
+                    {
+                        "problem": "Write operations are failing across different directories.",
+                        "solution": "Check for environment constraints or configurations that may be preventing write access. Ensure the Python environment is correctly set up and has the necessary permissions.",
+                        "information": [],
+                        "related_step": 9
+                    },
+                    {
+                        "problem": "Write operations are failing due to IOCTL errors and a corrupted journal file.",
+                        "solution": "Investigate the IOCTL failures and consider repairing the journal file. Check system logs for further details.",
+                        "information": [],
+                        "related_step": 9
+                    },
+                    {
+                        "problem": "Command execution environment is unresponsive, no output or errors returned.",
+                        "solution": "Check system logs or restart the environment.",
+                        "information": [],
+                        "related_step": 9
+                    },
+                    {
+                        "problem": "Command execution environment is unresponsive, unable to perform file operations.",
+                        "solution": "Check system status or restart the environment.",
+                        "information": [],
+                        "related_step": 9
+                    },
+                    {
+                        "problem": "Transcription process appears to be stuck without completion.",
+                        "solution": "Check system resources or restart the transcription process.",
+                        "information": [],
+                        "related_step": 9
+                    },
+                    {
+                        "problem": "Command execution environment is unresponsive, unable to perform any operations.",
+                        "solution": "Check system status or restart the environment.",
+                        "information": [],
+                        "related_step": 9
+                    },
+                    {
+                        "problem": "System has not been booted with systemd as init system, causing command execution failures.",
+                        "solution": "Check the init system or use alternative commands for managing the environment.",
+                        "information": [],
+                        "related_step": 9
+                    }
+                ],
+                "helper_commands": [
+                    "No specific commands available."
+                ],
+                "helper_urls": [
+                    "No specific URLs available."
+                ],
+                "helper_files": [
+                    "No specific files available."
+                ]
+            },
+            {
+                "step": 10,
+                "subtask": "Transcribe audio",
+                "commands": "./main -m models/ggml-base.en.bin -f /path/to/output/audio_16k.wav -file output.txt",
+                "take into consideration": "Use CUDA GPU for transcription",
+                "options": [
+                    {
+                        "flag": "--duration",
+                        "description": "duration of audio to process in milliseconds"
+                    },
+                    {
+                        "flag": "--prompt PROMPT",
+                        "description": "initial prompt (max n_text_ctx/2 tokens)",
+                        "value": "When the transcription is still in progress print the estimated progress in percentages."
+                    },
+                    {
+                        "flag": "--model",
+                        "description": "Path to the Whisper model (models/ggml-base.en.bin)"
+                    },
+                    {
+                        "flag": "--file",
+                        "description": "Path to the input WAV audio file"
+                    },
+                    {
+                        "flag": "--output-json",
+                        "description": "Output result in a JSON file"
+                    },
+                    {
+                        "flag": "--output-file",
+                        "description": "Output file path (without file extension)"
+                    },
+                    {
+                        "flag": "--language",
+                        "description": "Language code (e.g., 'en' for English, 'auto' for auto-detect)"
+                    }
+                ],
+                "related_issues": [
+                    {
+                        "related_step": 10,
+                        "problem": "Transcription process is extremely slow",
+                        "solution": "Consider using a smaller model or increasing the number of threads with the '-t' option if you have a multi-core CPU. Also, ensure no other resource-intensive processes are running simultaneously."
+                    },
+                    {
+                        "related_step": 10,
+                        "problem": "Out of memory error during transcription",
+                        "solution": "Try using a smaller Whisper model. If the issue persists, you may need to increase your system's RAM or use a swap file."
+                    },
+                    {
+                        "related_step": 10,
+                        "problem": "Simulated error occurred during execution.",
+                        "solution": "Check the command syntax and try again."
+                    },
+                    {
+                        "related_step": 10,
+                        "problem": "Missing output file",
+                        "solution": "The output file output.txt does not exist, indicating that the transcription process may not have completed successfully. Ensure that the transcription command is executed correctly and that the audio file is available at the correct location before attempting transcription again.",
+                        "information": []
+                    },
+                    {
+                        "problem": "Unable to execute terminal commands or retrieve output.",
+                        "solution": "Check the terminal session for issues or restart the environment.",
+                        "information": [],
+                        "related_step": 10
+                    },
+                    {
+                        "problem": "Write operations are failing across different directories.",
+                        "solution": "Check for environment constraints or configurations that may be preventing write access. Ensure the Python environment is correctly set up and has the necessary permissions.",
+                        "information": [],
+                        "related_step": 10
+                    },
+                    {
+                        "problem": "Write operations are failing due to IOCTL errors and a corrupted journal file.",
+                        "solution": "Investigate the IOCTL failures and consider repairing the journal file. Check system logs for further details.",
+                        "information": [],
+                        "related_step": 10
+                    },
+                    {
+                        "problem": "Command execution environment is unresponsive, no output or errors returned.",
+                        "solution": "Check system logs or restart the environment.",
+                        "information": [],
+                        "related_step": 10
+                    },
+                    {
+                        "problem": "Command execution environment is unresponsive, unable to perform file operations.",
+                        "solution": "Check system status or restart the environment.",
+                        "information": [],
+                        "related_step": 10
+                    },
+                    {
+                        "problem": "Transcription process appears to be stuck without completion.",
+                        "solution": "Check system resources or restart the transcription process.",
+                        "information": [],
+                        "related_step": 10
+                    },
+                    {
+                        "problem": "Command execution environment is unresponsive, unable to perform any operations.",
+                        "solution": "Check system status or restart the environment.",
+                        "information": [],
+                        "related_step": 10
+                    },
+                    {
+                        "problem": "System has not been booted with systemd as init system, causing command execution failures.",
+                        "solution": "Check the init system or use alternative commands for managing the environment.",
+                        "information": [],
+                        "related_step": 10
+                    }
+                ],
+                "helper_commands": [
+                    "No specific commands available."
+                ],
+                "helper_urls": [
+                    "No specific URLs available."
+                ],
+                "helper_files": [
+                    "No specific files available."
+                ]
+            },
+            {
+                "step": 11,
+                "subtask": "Check audio file length for timestamp verification in step 9",
+                "commands": "ffprobe -i /path/to/output/audio_16k.wav -show_entries format=duration -v quiet -of csv=\"p=0\"",
+                "take into consideration": "This command retrieves the duration of the audio file in seconds. You will need this information to verify the transcription timestamps in step 9.",
+                "related_issues": [
+                    {
+                        "related_step": 11,
+                        "problem": "FFprobe fails to retrieve audio file information",
+                        "solution": "Ensure FFprobe is correctly installed and that the audio file path is correct. If the issue persists, check the audio file format and encoding.",
+                        "information": []
+                    },
+                    {
+                        "related_step": 11,
+                        "problem": "Simulated error occurred during execution.",
+                        "solution": "Check the command syntax and try again.",
+                        "information": []
+                    },
+                    {
+                        "problem": "Unable to execute terminal commands or retrieve output.",
+                        "solution": "Check the terminal session for issues or restart the environment.",
+                        "information": [],
+                        "related_step": 11
+                    },
+                    {
+                        "problem": "Write operations are failing across different directories.",
+                        "solution": "Check for environment constraints or configurations that may be preventing write access. Ensure the Python environment is correctly set up and has the necessary permissions.",
+                        "information": [],
+                        "related_step": 11
+                    },
+                    {
+                        "problem": "Write operations are failing due to IOCTL errors and a corrupted journal file.",
+                        "solution": "Investigate the IOCTL failures and consider repairing the journal file. Check system logs for further details.",
+                        "information": [],
+                        "related_step": 11
+                    },
+                    {
+                        "problem": "Command execution environment is unresponsive, no output or errors returned.",
+                        "solution": "Check system logs or restart the environment.",
+                        "information": [],
+                        "related_step": 11
+                    },
+                    {
+                        "problem": "Command execution environment is unresponsive, unable to perform file operations.",
+                        "solution": "Check system status or restart the environment.",
+                        "information": [],
+                        "related_step": 11
+                    },
+                    {
+                        "problem": "Transcription process appears to be stuck without completion.",
+                        "solution": "Check system resources or restart the transcription process.",
+                        "information": [],
+                        "related_step": 11
+                    },
+                    {
+                        "problem": "Command execution environment is unresponsive, unable to perform any operations.",
+                        "solution": "Check system status or restart the environment.",
+                        "information": [],
+                        "related_step": 11
+                    },
+                    {
+                        "problem": "System has not been booted with systemd as init system, causing command execution failures.",
+                        "solution": "Check the init system or use alternative commands for managing the environment.",
+                        "information": [],
+                        "related_step": 11
+                    }
+                ],
+                "helper_commands": [
+                    "No specific commands available."
+                ],
+                "helper_urls": [
+                    "No specific URLs available."
+                ],
+                "helper_files": [
+                    "No specific files available."
+                ]
+            },
+            {
+                "step": 12,
+                "subtask": "wait until whisper.cpp outputs the transcription with the final timestamp indicating the transcription is done",
+                "commands": "",
+                "take into consideration": "wait 2 minutes before taking further actions, and repeat the waiting process unless the user tells you the transcription is done.",
+                "related_issues": [
+                    {
+                        "related_step": 12,
+                        "problem": "it takes very long",
+                        "solution": "wait 2 minutes before taking further actions, and repeat the waiting process unless the user tells you the transcription is done",
+                        "information": []
+                    },
+                    {
+                        "problem": "Unable to execute terminal commands or retrieve output.",
+                        "solution": "Check the terminal session for issues or restart the environment.",
+                        "information": [],
+                        "related_step": 12
+                    },
+                    {
+                        "problem": "Write operations are failing across different directories.",
+                        "solution": "Check for environment constraints or configurations that may be preventing write access. Ensure the Python environment is correctly set up and has the necessary permissions.",
+                        "information": [],
+                        "related_step": 12
+                    },
+                    {
+                        "problem": "Write operations are failing due to IOCTL errors and a corrupted journal file.",
+                        "solution": "Investigate the IOCTL failures and consider repairing the journal file. Check system logs for further details.",
+                        "information": [],
+                        "related_step": 12
+                    },
+                    {
+                        "problem": "Command execution environment is unresponsive, no output or errors returned.",
+                        "solution": "Check system logs or restart the environment.",
+                        "information": [],
+                        "related_step": 12
+                    },
+                    {
+                        "problem": "Command execution environment is unresponsive, unable to perform file operations.",
+                        "solution": "Check system status or restart the environment.",
+                        "information": [],
+                        "related_step": 12
+                    },
+                    {
+                        "problem": "Transcription process appears to be stuck without completion.",
+                        "solution": "Check system resources or restart the transcription process.",
+                        "information": [],
+                        "related_step": 12
+                    },
+                    {
+                        "problem": "Command execution environment is unresponsive, unable to perform any operations.",
+                        "solution": "Check system status or restart the environment.",
+                        "information": [],
+                        "related_step": 12
+                    },
+                    {
+                        "problem": "System has not been booted with systemd as init system, causing command execution failures.",
+                        "solution": "Check the init system or use alternative commands for managing the environment.",
+                        "information": [],
+                        "related_step": 12
+                    }
+                ],
+                "helper_commands": [
+                    "No specific commands available."
+                ],
+                "helper_urls": [
+                    "No specific URLs available."
+                ],
+                "helper_files": [
+                    "No specific files available."
+                ]
+            },
+            {
+                "step": 13,
+                "subtask": "View transcription",
+                "commands": "cat output.txt",
+                "related_issues": [
+                    {
+                        "related_step": 13,
+                        "problem": "The transcription process has been running for an extended period without completion.",
+                        "solution": "Wait until the transcription process is complete before viewing the output. If it seems stuck, check system resources and consider restarting the process with a smaller model or shorter audio file.",
+                        "information": []
+                    },
+                    {
+                        "related_step": 13,
+                        "problem": "Output file is empty or not created",
+                        "solution": "Ensure the transcription process completed successfully. Check for any error messages during the transcription step. Verify that you have write permissions in the output directory.",
+                        "information": []
+                    },
+                    {
+                        "related_step": 13,
+                        "problem": "Simulated error occurred during execution.",
+                        "solution": "Check the command syntax and try again.",
+                        "information": []
+                    },
+                    {
+                        "related_step": 13,
+                        "problem": "The output file does not exist yet",
+                        "solution": "Wait for the transcription process to complete successfully before attempting to view the output.",
+                        "information": []
+                    },
+                    {
+                        "related_step": 13,
+                        "problem": "Transcription completed successfully",
+                        "solution": "[00:00:00.000 --> xx:xx:xx.xxx]   if the transcription timestamp matches the audio file length.",
+                        "information": []
+                    },
+                    {
+                        "problem": "Unable to execute terminal commands or retrieve output.",
+                        "solution": "Check the terminal session for issues or restart the environment.",
+                        "information": [],
+                        "related_step": 13
+                    },
+                    {
+                        "problem": "Write operations are failing across different directories.",
+                        "solution": "Check for environment constraints or configurations that may be preventing write access. Ensure the Python environment is correctly set up and has the necessary permissions.",
+                        "information": [],
+                        "related_step": 13
+                    },
+                    {
+                        "problem": "Write operations are failing due to IOCTL errors and a corrupted journal file.",
+                        "solution": "Investigate the IOCTL failures and consider repairing the journal file. Check system logs for further details.",
+                        "information": [],
+                        "related_step": 13
+                    },
+                    {
+                        "problem": "Command execution environment is unresponsive, no output or errors returned.",
+                        "solution": "Check system logs or restart the environment.",
+                        "information": [],
+                        "related_step": 13
+                    },
+                    {
+                        "problem": "Command execution environment is unresponsive, unable to perform file operations.",
+                        "solution": "Check system status or restart the environment.",
+                        "information": [],
+                        "related_step": 13
+                    },
+                    {
+                        "problem": "Transcription process appears to be stuck without completion.",
+                        "solution": "Check system resources or restart the transcription process.",
+                        "information": [],
+                        "related_step": 13
+                    },
+                    {
+                        "problem": "Command execution environment is unresponsive, unable to perform any operations.",
+                        "solution": "Check system status or restart the environment.",
+                        "information": [],
+                        "related_step": 13
+                    },
+                    {
+                        "problem": "System has not been booted with systemd as init system, causing command execution failures.",
+                        "solution": "Check the init system or use alternative commands for managing the environment.",
+                        "information": [],
+                        "related_step": 13
+                    }
+                ],
+                "helper_commands": [
+                    "No specific commands available."
+                ],
+                "helper_urls": [
+                    "No specific URLs available."
+                ],
+                "helper_files": [
+                    "No specific files available."
+                ]
+            }
+        ],
+        "additional_information": [
+            "Whisper CPP works best with 16 kHz WAV files.",
+            "The FFmpeg command provided in a step ensures your audio is in the optimal format for Whisper.",
+            "For long audio files, consider splitting them into smaller chunks before transcription.",
+            "Experiment with different models to find the best balance between accuracy and speed for your needs.",
+            "Use the '-l auto' option to let Whisper automatically detect the language of the audio.",
+            "The installation checks assume a Debian-based system. Adjust package manager commands for other systems.",
+            "If you encounter any errors, refer to the 'issues' section of each step for potential solutions.",
+            "If an issue is not referenced here, add it to the 'issues' section of the respective step.",
+            "If there are duplicate issues, in one step remove the duplicate.",
+            "Always provide and update relevant and working helper commands, URLs, and file paths to assist in troubleshooting.",
+            "If **commands** lead to issues or errors, add them to the 'related_issues' section of the respective step. And replace the **command** with the solution when available."
+        ],
+        "general_issues": [
+            {
+                "problem": "Unable to execute terminal commands or retrieve output.",
+                "solution": "Check the terminal session for issues or restart the environment.",
+                "information": [
+                    {
+                        "helper_commands": [
+                            "sudo systemctl restart your_service",
+                            "check system logs"
+                        ]
+                    },
+                    {
+                        "helper_urls": [
+                            "https://example.com/troubleshooting"
+                        ]
+                    },
+                    {
+                        "helper_files": [
+                            "/var/log/syslog"
+                        ]
+                    }
+                ]
+            },
+            {
+                "problem": "Write operations are failing across different directories.",
+                "solution": "Check for environment constraints or configurations that may be preventing write access. Ensure the Python environment is correctly set up and has the necessary permissions.",
+                "information": [
+                    {
+                        "helper_commands": [
+                            "sudo systemctl restart your_service",
+                            "check system logs"
+                        ]
+                    },
+                    {
+                        "helper_urls": [
+                            "https://example.com/troubleshooting"
+                        ]
+                    },
+                    {
+                        "helper_files": [
+                            "/var/log/syslog"
+                        ]
+                    }
+                ]
+            },
+            {
+                "problem": "Write operations are failing due to IOCTL errors and a corrupted journal file.",
+                "solution": "Investigate the IOCTL failures and consider repairing the journal file. Check system logs for further details.",
+                "information": [
+                    {
+                        "helper_commands": [
+                            "sudo systemctl restart your_service",
+                            "check system logs"
+                        ]
+                    },
+                    {
+                        "helper_urls": [
+                            "https://example.com/troubleshooting"
+                        ]
+                    },
+                    {
+                        "helper_files": [
+                            "/var/log/syslog"
+                        ]
+                    }
+                ]
+            },
+            {
+                "problem": "Command execution environment is unresponsive, no output or errors returned.",
+                "solution": "Check system logs or restart the environment.",
+                "information": [
+                    {
+                        "helper_commands": [
+                            "sudo systemctl restart your_service",
+                            "check system logs"
+                        ]
+                    },
+                    {
+                        "helper_urls": [
+                            "https://example.com/troubleshooting"
+                        ]
+                    },
+                    {
+                        "helper_files": [
+                            "/var/log/syslog"
+                        ]
+                    }
+                ]
+            },
+            {
+                "problem": "Command execution environment is unresponsive, unable to perform file operations.",
+                "solution": "Check system status or restart the environment.",
+                "information": [
+                    {
+                        "helper_commands": [
+                            "sudo systemctl restart your_service",
+                            "check system logs"
+                        ]
+                    },
+                    {
+                        "helper_urls": [
+                            "https://example.com/troubleshooting"
+                        ]
+                    },
+                    {
+                        "helper_files": [
+                            "/var/log/syslog"
+                        ]
+                    }
+                ]
+            },
+            {
+                "problem": "Transcription process appears to be stuck without completion.",
+                "solution": "Check system resources or restart the transcription process.",
+                "information": [
+                    {
+                        "helper_commands": [
+                            "sudo systemctl restart your_service",
+                            "check system logs"
+                        ]
+                    },
+                    {
+                        "helper_urls": [
+                            "https://example.com/troubleshooting"
+                        ]
+                    },
+                    {
+                        "helper_files": [
+                            "/var/log/syslog"
+                        ]
+                    }
+                ]
+            },
+            {
+                "problem": "Command execution environment is unresponsive, unable to perform any operations.",
+                "solution": "Check system status or restart the environment.",
+                "information": [
+                    {
+                        "helper_commands": [
+                            "sudo systemctl restart your_service",
+                            "check system logs"
+                        ]
+                    },
+                    {
+                        "helper_urls": [
+                            "https://example.com/troubleshooting"
+                        ]
+                    },
+                    {
+                        "helper_files": [
+                            "/var/log/syslog"
+                        ]
+                    }
+                ]
+            },
+            {
+                "problem": "System has not been booted with systemd as init system, causing command execution failures.",
+                "solution": "Check the init system or use alternative commands for managing the environment.",
+                "information": [
+                    {
+                        "helper_commands": [
+                            "sudo systemctl restart your_service",
+                            "check system logs"
+                        ]
+                    },
+                    {
+                        "helper_urls": [
+                            "https://example.com/troubleshooting"
+                        ]
+                    },
+                    {
+                        "helper_files": [
+                            "/var/log/syslog"
+                        ]
+                    }
+                ]
+            },
+            {
+                "problem": "The specified audio file does not exist at the provided path.",
+                "solution": "Ensure that the audio file is available at the correct location before attempting any conversion. Verify the file path and confirm the presence of the audio file.",
+                "information": [
+                    {
+                        "helper_commands": [
+                            "ls /path/to/input/audio.wav"
+                        ],
+                        "helper_urls": [],
+                        "helper_files": []
+                    }
+                ]
+            }
+        ]
+    }
+}
